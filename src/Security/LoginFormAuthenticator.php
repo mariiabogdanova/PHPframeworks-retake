@@ -80,20 +80,25 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         if ($user->getPassword() === $password)
         {
-            echo 'Authenticated';
+            // echo 'Authenticated';
             return true; }
                 else {
                     return false; }
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
-    {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-            return new RedirectResponse($targetPath);
-        }
+        {
+        // if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+        //     return new RedirectResponse($targetPath);
+        // }
+        // return new RedirectResponse($this->router->generate('normaluser_profile'));
+                    // if ($this->$user->isGranted('ROLE_ADMIN')){
+            // return new RedirectResponse($this->router->generate('normaluser_profile'));
+            return new RedirectResponse($this->router->generate('message_index'));
 
-        // For example : return new RedirectResponse($this->router->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        // }
+
+        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     protected function getLoginUrl()
@@ -101,3 +106,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $this->router->generate('app_login');
     }
 }
+
+
+        // if ($this->security->isGranted('ROLE_ADMIN')){
+        //     return new RedirectResponse($this->router->generate('admin/profile'));
+        // }
+
+        // elseif ($this->security->isGranted('ROLE_BASICUSER'){
+        //     return new RedirectResponse($this->router->generate('normaluser/profile'));
+        // }

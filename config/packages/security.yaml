@@ -1,11 +1,14 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     encoders:
-        App\Entity\User:
-            algorithm: bcrypt
-            cost: 12
+        # App\Entity\User:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+        App\Entity\User: sha512
     providers:
-        in_memory: { memory: ~ }
+        our_users:
+            entity: { class: App\Entity\User, property: email }
+        # some_provider_key:
+        # in_memory: { memory: ~ }
             # users:
             #     user:  { password: '%env(USER_PASSWORD)%', roles: [ 'ROLE_USER' ] }
             #     admin: { password: '%env(ADMIN_PASSWORD)%', roles: [ 'ROLE_ADMIN' ] }
@@ -29,6 +32,6 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
-    access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: ROLE_USER }
+    # access_control:
+    #     - { path: ^/admin_profile, roles: ROLE_ADMIN }
+    #     - { path: ^/normaluser_profile, roles: ROLE_BASICUSER }
