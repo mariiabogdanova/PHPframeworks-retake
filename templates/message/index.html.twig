@@ -12,9 +12,7 @@
                 <th>Creator_email</th>
                 <th>Reply_to_id</th>
                 <th>Text</th>
-                {% if is_granted('ROLE_ADMIN') %}
                 <th>Is this topic closed?</th>
-                {% endif %}
                 <th>actions</th>
             </tr>
         </thead>
@@ -25,15 +23,16 @@
                 <td>{{ message.creatorEmail }}</td>
                 <td>{{ message.replyToId }}</td>
                 <td>{{ message.text }}</td>
-            {% if is_granted('ROLE_ADMIN') %}
                 <td>{{ message.isClosed ? 'Yes' : 'No' }}</td>
-            {% endif %}
                 <td>
                     <a href="{{ path('message_show', {'id': message.id}) }}">show</a>
-                    {% if app.user.email != message.creatorEmail %}
+                    {% if app.user.email == message.creatorEmail %}
                     {% if message.isClosed == 0 %}
                     <a href="{{ path('message_edit', {'id': message.id}) }}">edit</a>
                     {% endif %}
+                    {% endif %}
+                    {% if app.user.roles == '["ROLE_ADMIN","ROLE_USER"]' %}
+                    <a href="{{ path('message_edit', {'id': message.id}) }}">edit</a>
                     {% endif %}
                 </td>
             </tr>
