@@ -16,6 +16,10 @@ class Message
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     /**     * @ORM\OneToOne(
+     *     targetEntity="Acme\UserBundle\Entity\ActiveMessage", 
+     *     mappedBy="ActiveMessage"
+     * )
      */
     private $id;
 
@@ -37,7 +41,6 @@ class Message
     /**
      * @ORM\Column(type="boolean")
      */
-    private $status;
 
     public function getId(): ?int
     {
@@ -79,21 +82,4 @@ class Message
 
         return $this;
     }
-
-    public function getStatus(): ?bool
-    {
-        return $this->status;
-    }
-
-
-    /**
-     * @IsGranted("ROLE_BASICUSER", message="No access! Get out!")
-     */
-    public function setStatus(bool $status): self
-    {
-        // if ($this->isGranted('ROLE_ADMIN')) {// $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to modify this value!');
-        $this->status = $status;
-
-        return $this;}
-    // }
 }

@@ -88,19 +88,4 @@ class MessageController extends AbstractController
         return $this->redirectToRoute('message_index');
     }
 
-    public function closeTheTopic(Request $request, Message $message): Response {
-        $form = $this->createForm(MessageType::class, $message);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('message_index', ['id' => $message->getId()]);
-        }
-
-        return $this->render('message/edit.html.twig', [
-            'message' => $message,
-            'form' => $form->createView(),
-        ]);
-    }
 }

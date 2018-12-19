@@ -88,17 +88,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
         {
-        // if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-        //     return new RedirectResponse($targetPath);
-        // }
-        // return new RedirectResponse($this->router->generate('normaluser_profile'));
-                    // if ($this->$user->isGranted('ROLE_ADMIN')){
-            // return new RedirectResponse($this->router->generate('normaluser_profile'));
             return new RedirectResponse($this->router->generate('message_index'));
-
-        // }
-
-        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     protected function getLoginUrl()
@@ -106,12 +96,3 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $this->router->generate('app_login');
     }
 }
-
-
-        // if ($this->security->isGranted('ROLE_ADMIN')){
-        //     return new RedirectResponse($this->router->generate('admin/profile'));
-        // }
-
-        // elseif ($this->security->isGranted('ROLE_BASICUSER'){
-        //     return new RedirectResponse($this->router->generate('normaluser/profile'));
-        // }

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ActiveMessage{% endblock %}
+
+{% block body %}
+    <h1>ActiveMessage</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ active_message.id }}</td>
+            </tr>
+            <tr>
+                <th>Message_id</th>
+                <td>{{ active_message.messageId }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ active_message.status ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('active_message_index') }}">back to list</a>
+
+    <a href="{{ path('active_message_edit', {'id': active_message.id}) }}">edit</a>
+
+    {{ include('active_message/_delete_form.html.twig') }}
+{% endblock %}
