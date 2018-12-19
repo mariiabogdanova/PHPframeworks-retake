@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/message")
@@ -59,19 +60,32 @@ class MessageController extends AbstractController
      */
     public function edit(Request $request, Message $message): Response
     {
-        $form = $this->createForm(MessageType::class, $message);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('message_index', ['id' => $message->getId()]);
+        // $form = $this->createForm(MessageType::class, $message);
+        if ($message->getIsClosed() == 1) {
+            throw new AccessDeniedException('This topic has been closed by moderator');
         }
+        else {
+            $user_roles = $this->getUser()->getRoles();
+            $form = $this->createForm('App\\Form\MessageType', $message, array('role' => $user_roles));
+            $form->handleRequest($request);
 
-        return $this->render('message/edit.html.twig', [
-            'message' => $message,
-            'form' => $form->createView(),
-        ]);
+
+            // $isClosed = $request->request->get('isClosed');
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('message_index', ['id' => $message->getId()]);
+            }
+            // else if ($isClosed == null){
+            //     $isClosed = 0;
+            //     return $this->redirectToRoute('message_index', ['id' => $message->getId()]);
+            // }
+
+            return $this->render('message/edit.html.twig', [
+                'message' => $message,
+                'form' => $form->createView(),
+            ]);
+        }
     }
 
     /**

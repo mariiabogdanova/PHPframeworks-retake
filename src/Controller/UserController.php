@@ -9,12 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * @Route("/user")
@@ -26,26 +21,14 @@ class UserController extends AbstractController
      */
     public function index(UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('user/index.html.twig', ['users' => $userRepository->findAll()]);
     }
 
-    /**
-     * @Route("/new", name="user_new", methods={"GET","POST"})
-     */
-    // public function serializeRoles(){
-
-    //     $encoders = array(new XmlEncoder(), new JsonEncoder());
-    //     $normalizers = array(new ObjectNormalizer());
-
-    //     $serializer = new Serializer($normalizers, $encoders);
-
-    //     $roles = $user->getRoles();
-
-    //     $roles = $serializer->deserialize($roles, User::class, 'xml');
-    // }
 
     public function new(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -69,13 +52,7 @@ class UserController extends AbstractController
      */
     public function show(User $user): Response
     {
-        // $encoders = array(new XmlEncoder(), new JsonEncoder());
-        // $normalizers = array(new ObjectNormalizer());
-        // $serializer = new Serializer($normalizers, $encoders);
-
-        // $roles = $user -> getRoles();
-        // $roles = $serializer->serialize($roles, 'json');
-
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('user/show.html.twig', ['user' => $user]);
     }
 
@@ -84,22 +61,13 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user): Response
     {
-        // $encoders = array(new XmlEncoder(), new JsonEncoder());
-        // $normalizers = array(new ObjectNormalizer());
-
-        // $serializer = new Serializer($normalizers, $encoders);
-
-        // $user = json_encode($roles);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $roles = $this->getParameter('security.role_hierarchy.roles');
-        // $user->setRoles($roles);
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // $roles = $user->getRoles();
-            // $roles = $serializer->deserialize($roles, User::class, 'json');
-            // $user->setRoles($roles);
 
             $this->getDoctrine()->getManager()->flush();
 
@@ -117,6 +85,7 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);

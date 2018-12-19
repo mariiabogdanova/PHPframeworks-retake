@@ -96,3 +96,28 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $this->router->generate('app_login');
     }
 }
+
+
+
+// sources:
+// https://symfony.com/doc/current/security.html#retrieving-the-user-object
+
+// https://symfony.com/doc/current/security/form_login_setup.html
+
+// https://silex.symfony.com/doc/2.0/cookbook/guard_authentication.html - to check credentials
+
+// https://stackoverflow.com/questions/48968889/encoder-ispasswordvalid-must-implement-interface-userinterface
+
+// https://github.com/symfony/symfony/issues/27311
+
+// https://medium.com/@RudiRocha/creating-pages-with-symfony-4-1260cade7331
+
+// https://symfony.com/doc/current/templating/twig_extension.html
+
+// https://ourcodeworld.com/articles/read/245/how-to-execute-plain-sql-using-doctrine-in-symfony-3
+
+// https://stackoverflow.com/questions/47845622/generating-crud-in-symfony-4
+
+// https://symfony.com/doc/master/bundles/SensioGeneratorBundle/commands/generate_doctrine_crud.html
+
+// https://stackoverflow.com/questions/35433295/how-to-customize-form-field-based-on-user-roles-in-symfony2-3

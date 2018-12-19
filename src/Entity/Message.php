@@ -3,9 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MessageRepository")
@@ -16,10 +13,6 @@ class Message
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     /**     * @ORM\OneToOne(
-     *     targetEntity="Acme\UserBundle\Entity\ActiveMessage", 
-     *     mappedBy="ActiveMessage"
-     * )
      */
     private $id;
 
@@ -39,8 +32,9 @@ class Message
     private $text;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
+    private $isClosed;
 
     public function getId(): ?int
     {
@@ -79,6 +73,21 @@ class Message
     public function setText(string $text): self
     {
         $this->text = $text;
+
+        return $this;
+    }
+
+    public function getIsClosed(): ?bool
+    {
+        return $this->isClosed;
+    }
+
+    public function setIsClosed(bool $isClosed): self
+    {
+        if ($isClosed == null){
+            $$isClosed = 0;
+        }
+        $this->isClosed = $isClosed;
 
         return $this;
     }

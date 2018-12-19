@@ -3,10 +3,8 @@
 {% block title %}Message index{% endblock %}
 
 {% block body %}
-
-
     <h1>Messages</h1>
-
+<h1>Hello {{app.user.email}}</h1>
     <table class="table">
         <thead>
             <tr>
@@ -14,6 +12,9 @@
                 <th>Creator_email</th>
                 <th>Reply_to_id</th>
                 <th>Text</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                <th>Is this topic closed?</th>
+                {% endif %}
                 <th>actions</th>
             </tr>
         </thead>
@@ -25,11 +26,15 @@
                 <td>{{ message.replyToId }}</td>
                 <td>{{ message.text }}</td>
             {% if is_granted('ROLE_ADMIN') %}
-                <td><a href="{{ path('active_message_edit', {'id': message.id}) }}">Select activity status of this topic</a><td>
+                <td>{{ message.isClosed ? 'Yes' : 'No' }}</td>
             {% endif %}
                 <td>
                     <a href="{{ path('message_show', {'id': message.id}) }}">show</a>
+                    {% if app.user.email != message.creatorEmail %}
+                    {% if message.isClosed == 0 %}
                     <a href="{{ path('message_edit', {'id': message.id}) }}">edit</a>
+                    {% endif %}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
@@ -41,7 +46,6 @@
     </table>
     {% if is_granted('ROLE_ADMIN') %}
         <a href="{{ path('user_index') }}">Edit users</a>
-        <a href="{{ path('active_message_index') }}">Edit active messages</a>
     {% endif %}
 
     <a href="{{ path('message_new') }}">Create new</a>
